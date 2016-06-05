@@ -107,7 +107,11 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Const.cs" />
+    <Compile Include="Consts.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\DateTimeToStringConverter.cs" />
+    <Compile Include="DateTimeExtensions.cs" />
+    <Compile Include="NotifyTaskCompletion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\CNodeUwp.Common.rd.xml" />
   </ItemGroup>

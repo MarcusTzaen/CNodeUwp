@@ -113,9 +113,17 @@
     <EmbeddedResource Include="Properties\CNodeUwp.WebModels.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CNodeUwp.Common\CNodeUwp.Common.csproj">
+      <Project>{E5DC4E9B-04BA-45ED-8577-C5E39CD38B9F}</Project>
+      <Name>CNodeUwp.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CNodeUwp.Models\CNodeUwp.Models.csproj">
       <Project>{c2313698-2a1b-4bd7-9071-a2a1c46774b9}</Project>
       <Name>CNodeUwp.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CNodeUwp.Services\CNodeUwp.Services.csproj">
+      <Project>{de15b7e7-2ea1-48fc-a1ab-8cc3daf2b0de}</Project>
+      <Name>CNodeUwp.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

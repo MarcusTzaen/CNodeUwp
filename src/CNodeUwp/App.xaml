@@ -3,10 +3,36 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CNodeUwp"
+    xmlns:converts ="using:CNodeUwp.Common.Converters"
     RequestedTheme="Light">
     
     <Application.Resources>
         <!--Global View Model Locator-->
         <local:ViewModelLocator x:Key="Locator" />
+        <converts:DateTimeToStringConverter x:Key="DateTimeToStringConverter"></converts:DateTimeToStringConverter>
+        <converts:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></converts:BooleanToVisibilityConverter>
+
+        <Style TargetType="PivotItem" x:Name="ZeroMarginPivotItem">
+            <Setter Property="Margin" Value="0 0 0 0"></Setter>
+        </Style>
+
+        <Style TargetType="ListViewItem" x:Name="TopicListItem">
+            <!--<Setter Property="Background" Value="Gray"></Setter>-->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <ListViewItemPresenter Margin="0 0 0 12" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            
+        </Style>
+
+        <Style TargetType="TextBlock" x:Name="TopicDescription">
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="FontSize" Value="10"></Setter>
+            <Setter Property="Foreground" Value="Gray"></Setter>
+        </Style>
+
     </Application.Resources>
 </Application>

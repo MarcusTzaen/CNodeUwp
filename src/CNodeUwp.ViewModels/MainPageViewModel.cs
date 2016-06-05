@@ -1,6 +1,11 @@
-﻿using GalaSoft.MvvmLight;
+﻿using CNodeUwp.Common;
+using CNodeUwp.Models.Topic.Version1;
+using CNodeUwp.Services;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
+using System.Collections.ObjectModel;
+using System.Threading;
 
 namespace CNodeUwp.ViewModels
 {
@@ -10,38 +15,25 @@ namespace CNodeUwp.ViewModels
 
         private IDialogService _dialogService { get; set; }
 
-        private string _title;
-        public string Title
+        private NotifyTaskCompletion<ObservableCollection<TopicResponse>> _topics;
+        public NotifyTaskCompletion<ObservableCollection<TopicResponse>> Topics
         {
-            get
-            {
-                return _title;
-            }
+            get { return _topics; }
             set
             {
-                Set(nameof(Title), ref _title, value);
+                Set(nameof(Topics), ref _topics, value);
             }
         }
 
-        public RelayCommand GoToAboutCommand
+        public RelayCommand FilterCommand
         {
             get
             {
                 return new RelayCommand(() =>
                            {
-                               _navigationService.NavigateTo("About");
+                               //await GetTopics(1, TopicTabType.All);
+                               //_navigationService.NavigateTo("About");
                            });
-            }
-        }
-
-        public RelayCommand ShowDialogCommand
-        {
-            get
-            {
-                return new RelayCommand(() =>
-                {
-                    _dialogService.ShowMessage("Hello world!", "My Title");
-                });
             }
         }
 
@@ -49,9 +41,19 @@ namespace CNodeUwp.ViewModels
             INavigationService navigationService
             , IDialogService dialogService)
         {
-            this.Title = "Welcome to main page";
             _navigationService = navigationService;
             _dialogService = dialogService;
+            GetTopics(1, TopicTabType.All);
+        }
+
+        private void GetTopics(int pageNumber, TopicTabType tab, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var response = TopicService.GetTopicListAsync(new TopicPageRequest()
+            {
+                Page = pageNumber,
+                Tab = tab,
+            }, cancellationToken);
+            Topics = new NotifyTaskCompletion<ObservableCollection<TopicResponse>>(response);
         }
     }
 }

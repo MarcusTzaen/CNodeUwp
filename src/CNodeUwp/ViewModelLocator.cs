@@ -13,8 +13,8 @@ namespace CNodeUwp
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             var nav = new NavigationService();
-            nav.Configure(Const.MAIN_PAGE_KEY, typeof(MainPage));
-            nav.Configure(Const.ABOUT_PAGE_KEY, typeof(AboutPage));
+            nav.Configure(Consts.MAIN_PAGE_KEY, typeof(MainPage));
+            nav.Configure(Consts.ABOUT_PAGE_KEY, typeof(AboutPage));
 
 
             SimpleIoc.Default.Register<INavigationService>(() => nav);
