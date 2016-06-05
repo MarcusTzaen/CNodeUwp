@@ -1,0 +1,12 @@
+﻿<Application
+    x:Class="CNodeUwp.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CNodeUwp"
+    RequestedTheme="Light">
+    
+    <Application.Resources>
+        <!--Global View Model Locator-->
+        <local:ViewModelLocator x:Key="Locator" />
+    </Application.Resources>
+</Application>
