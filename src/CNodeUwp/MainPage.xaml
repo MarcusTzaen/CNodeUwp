@@ -30,8 +30,13 @@
         </CommandBar>
     </Page.BottomAppBar>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Pivot >
-            <PivotItem Header="话题" Style="{StaticResource ZeroMarginPivotItem}">
+        <Pivot Style="{StaticResource TopicListPivot}" ItemContainerStyle="{StaticResource ZeroMarginPivot}">
+            <Pivot.HeaderTemplate>
+                <DataTemplate>
+                    <TextBlock x:Name="Title" Text="{Binding }" HorizontalAlignment="Stretch"></TextBlock>
+                </DataTemplate>
+            </Pivot.HeaderTemplate>
+            <PivotItem Header="话题">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"></RowDefinition>
@@ -40,6 +45,7 @@
                                Visibility="{Binding Topics.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"></TextBlock>
                     <ListView Grid.Row="0" ItemsSource="{Binding Topics.Result, Mode=TwoWay}" 
                               ItemContainerStyle="{StaticResource TopicListItem}" 
+                              Style="{StaticResource TopicList}"
                               Visibility="{Binding Topics.IsSuccessfullyCompleted, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -66,7 +72,7 @@
                     
                 </Grid>
             </PivotItem>
-            <PivotItem Header="我的"  Style="{StaticResource ZeroMarginPivotItem}">
+            <PivotItem Header="我的">
                 
             </PivotItem>
         </Pivot>
