@@ -22,7 +22,7 @@
         </Style>
 
         <Style TargetType="ListViewItem" x:Name="TopicListItem">
-            <!--<Setter Property="Background" Value="Gray"></Setter>-->
+            <Setter Property="Margin" Value="12 0 12 0"></Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
