@@ -15,6 +15,8 @@ namespace CNodeUwp.ViewModels
 
         private IDialogService _dialogService { get; set; }
 
+        private TopicTabType TabType { get; set; } = TopicTabType.All;
+
         private NotifyTaskCompletion<ObservableCollection<TopicResponse>> _topics;
         public NotifyTaskCompletion<ObservableCollection<TopicResponse>> Topics
         {
@@ -37,21 +39,32 @@ namespace CNodeUwp.ViewModels
             }
         }
 
+        public RelayCommand RefreshCommand
+        {
+            get
+            {
+                return new RelayCommand(() =>
+                {
+                    GetTopics(1);
+                });
+            }
+        }
+
         public MainPageViewModel(
             INavigationService navigationService
             , IDialogService dialogService)
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
-            GetTopics(1, TopicTabType.All);
+            GetTopics(1);
         }
 
-        private void GetTopics(int pageNumber, TopicTabType tab, CancellationToken cancellationToken = default(CancellationToken))
+        private void GetTopics(int pageNumber, CancellationToken cancellationToken = default(CancellationToken))
         {
             var response = TopicService.GetTopicListAsync(new TopicPageRequest()
             {
                 Page = pageNumber,
-                Tab = tab,
+                Tab = TabType,
             }, cancellationToken);
             Topics = new NotifyTaskCompletion<ObservableCollection<TopicResponse>>(response);
         }

@@ -23,6 +23,7 @@
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
+            <AppBarButton Icon="Refresh" Label="刷新" Command="{Binding RefreshCommand}"></AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Icon="like" Label="喜欢"></AppBarButton>
             </CommandBar.SecondaryCommands>
@@ -35,7 +36,11 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <ListView Grid.Row="0" ItemsSource="{Binding Topics.Result, Mode=TwoWay}" ItemContainerStyle="{StaticResource TopicListItem}">
+                    <TextBlock Grid.Row="0" Text="Loading..." HorizontalAlignment="Center"
+                               Visibility="{Binding Topics.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"></TextBlock>
+                    <ListView Grid.Row="0" ItemsSource="{Binding Topics.Result, Mode=TwoWay}" 
+                              ItemContainerStyle="{StaticResource TopicListItem}" 
+                              Visibility="{Binding Topics.IsSuccessfullyCompleted, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
