@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:CNodeUwp"
+    xmlns:uc="using:CNodeUwp.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -42,11 +43,16 @@
                                         <RowDefinition Height="24"></RowDefinition>
                                         <RowDefinition Height="24"></RowDefinition>
                                     </Grid.RowDefinitions>
-                                    <TextBlock  Grid.Row="0" Text="[顶]" 
+                                    <uc:TextWithImages Grid.Row="0" 
+                                                           IsTop="{Binding IsTop, Mode=TwoWay}"
+                                                           IsExcellent="{Binding IsGood, Mode=TwoWay}"
+                                                           Title="{Binding Title, Mode=TwoWay}"></uc:TextWithImages>
+                                                           
+                                    <!--<TextBlock  Grid.Row="0" Text="[顶]" Margin="0 0 0 0"
                                                 Visibility="{Binding IsTop, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}"></TextBlock>
-                                    <TextBlock  Grid.Row="0" Text="[精]"
+                                    <TextBlock  Grid.Row="0" Text="[精]" Margin="24 0 0 0"
                                                 Visibility="{Binding IsGood, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}"></TextBlock>
-                                    <TextBlock Grid.Row="0" Text="{Binding Title, Mode=TwoWay}"></TextBlock>
+                                    <TextBlock Grid.Row="0" Text="{Binding Title, Mode=TwoWay}" Margin="48 0 0 0"></TextBlock>-->
                                     <TextBlock Grid.Row="1" Text="{Binding TopicDescription, Mode =TwoWay}" Style="{StaticResource TopicDescription}"></TextBlock>
                                 </Grid>
                             </DataTemplate>

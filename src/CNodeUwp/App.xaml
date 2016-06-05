@@ -16,6 +16,11 @@
             <Setter Property="Margin" Value="0 0 0 0"></Setter>
         </Style>
 
+        <Style TargetType="TextBlock" x:Name="TopicTitleIcon">
+            <!--<Setter Property="Margin" Value="0 0 24 0"></Setter>-->
+            <Setter Property="Width" Value="24"></Setter>
+        </Style>
+
         <Style TargetType="ListViewItem" x:Name="TopicListItem">
             <!--<Setter Property="Background" Value="Gray"></Setter>-->
             <Setter Property="Template">
