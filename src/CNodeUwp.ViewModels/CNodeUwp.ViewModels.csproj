@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutPageViewModel.cs" />
+    <Compile Include="TopicDetailViewModel.cs" />
     <Compile Include="MainPageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\CNodeUwp.WebModels.rd.xml" />

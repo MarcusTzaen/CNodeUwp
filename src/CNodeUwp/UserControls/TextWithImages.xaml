@@ -12,6 +12,6 @@
     <Grid>
         <Image Name="imgTopIcon" Source="/Assets/Up24x24.png" Width="24" Height="24" HorizontalAlignment="Left" Visibility="Collapsed"></Image>
         <Image Name="imgExcellentIcon" Source="/Assets/Excellent24x24.png" Width="24" Height="24" HorizontalAlignment="Left" Visibility="Collapsed"></Image>
-        <TextBlock x:Name="tbTitle" HorizontalAlignment="Left" ></TextBlock>
+        <TextBlock Name="tbTitle" HorizontalAlignment="Left" ></TextBlock>
     </Grid>
 </UserControl>

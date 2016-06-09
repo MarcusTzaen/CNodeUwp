@@ -110,7 +110,10 @@
     <Compile Include="Common\Version1\ApiResponse.cs" />
     <Compile Include="MainPageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Topic\Version1\TopicDetailRequest.cs" />
+    <Compile Include="Topic\Version1\TopicDetailResponse.cs" />
     <Compile Include="Topic\Version1\TopicPageRequest.cs" />
+    <Compile Include="Topic\Version1\TopicReplyResponse.cs" />
     <Compile Include="Topic\Version1\TopicResponse.cs" />
     <Compile Include="Topic\Version1\TopicTabType.cs" />
     <Compile Include="User\Version1\UserInfo.cs" />

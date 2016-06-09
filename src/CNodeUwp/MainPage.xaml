@@ -6,6 +6,8 @@
     xmlns:uc="using:CNodeUwp.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity" 
+    xmlns:Interactions="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     DataContext="{Binding MainPageVm, Source={StaticResource Locator}}">
 
@@ -46,24 +48,27 @@
                     <ListView Grid.Row="0" ItemsSource="{Binding Topics.Result, Mode=TwoWay}" 
                               ItemContainerStyle="{StaticResource TopicListItem}" 
                               Style="{StaticResource TopicList}"
-                              Visibility="{Binding Topics.IsSuccessfullyCompleted, Converter={StaticResource BooleanToVisibilityConverter}}">
+                              Visibility="{Binding Topics.IsSuccessfullyCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
+                              SelectionMode="None"
+                              IsItemClickEnabled="True"
+                              >
+                        <Interactivity:Interaction.Behaviors>
+                            <Interactions:EventTriggerBehavior EventName="ItemClick">
+                                <Interactions:InvokeCommandAction  Command="{Binding GoToDetailCommand}"></Interactions:InvokeCommandAction>
+                            </Interactions:EventTriggerBehavior>
+                        </Interactivity:Interaction.Behaviors>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
+                                <Grid >
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="24"></RowDefinition>
                                         <RowDefinition Height="24"></RowDefinition>
                                     </Grid.RowDefinitions>
                                     <uc:TextWithImages Grid.Row="0" 
-                                                           IsTop="{Binding IsTop, Mode=TwoWay}"
-                                                           IsExcellent="{Binding IsGood, Mode=TwoWay}"
-                                                           Title="{Binding Title, Mode=TwoWay}"></uc:TextWithImages>
-                                                           
-                                    <!--<TextBlock  Grid.Row="0" Text="[顶]" Margin="0 0 0 0"
-                                                Visibility="{Binding IsTop, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}"></TextBlock>
-                                    <TextBlock  Grid.Row="0" Text="[精]" Margin="24 0 0 0"
-                                                Visibility="{Binding IsGood, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}"></TextBlock>
-                                    <TextBlock Grid.Row="0" Text="{Binding Title, Mode=TwoWay}" Margin="48 0 0 0"></TextBlock>-->
+                                                       IsTop="{Binding IsTop, Mode=TwoWay}"
+                                                       IsExcellent="{Binding IsGood, Mode=TwoWay}"
+                                                       Title="{Binding Title, Mode=TwoWay}"
+                                                       ></uc:TextWithImages>
                                     <TextBlock Grid.Row="1" Text="{Binding TopicDescription, Mode =TwoWay}" Style="{StaticResource TopicDescription}"></TextBlock>
                                 </Grid>
                             </DataTemplate>

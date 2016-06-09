@@ -6,6 +6,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
 using System.Collections.ObjectModel;
 using System.Threading;
+using Windows.UI.Xaml.Controls;
 
 namespace CNodeUwp.ViewModels
 {
@@ -46,6 +47,18 @@ namespace CNodeUwp.ViewModels
                 return new RelayCommand(() =>
                 {
                     GetTopics(1);
+                });
+            }
+        }
+
+        public RelayCommand<ItemClickEventArgs> GoToDetailCommand
+        {
+            get
+            {
+                return new RelayCommand<ItemClickEventArgs>((args) =>
+                {
+                    var topicResponse = args.ClickedItem as TopicResponse;
+                    _navigationService.NavigateTo(Consts.TOPIC_DETAIL_PAGE_KEY, topicResponse.Id);
                 });
             }
         }

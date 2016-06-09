@@ -13,5 +13,6 @@ namespace CNodeUwp
         {
             this.InitializeComponent();
         }
+
     }
 }
