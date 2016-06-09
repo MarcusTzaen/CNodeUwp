@@ -19,7 +19,7 @@ namespace CNodeUwp.Services
         public async static Task<TopicDetailResponse> GetTopicDetailAsync(TopicDetailRequest request
             , CancellationToken cancellationToken = default(CancellationToken))
         {
-            string url = $"/v1/topic/{request.TopicId}";
+            string url = $"/v1/topic/{request.TopicId}?mdrender={request.NeedRendered.ToString().ToLowerInvariant()}";
             var response = await ServiceHelper.Get<ApiResponse<TopicDetailResponse>>(url).ConfigureAwait(false);
             return response.GetData();
         }

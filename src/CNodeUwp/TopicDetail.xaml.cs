@@ -41,7 +41,7 @@ namespace CNodeUwp
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            Messenger.Default.Unregister(TopicDetailVm);
+            //Messenger.Default.Unregister(TopicDetailVm);
             base.OnNavigatedFrom(e);
         }
 
