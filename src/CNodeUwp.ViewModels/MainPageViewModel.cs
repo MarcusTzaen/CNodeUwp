@@ -5,6 +5,7 @@ using CNodeUwp.Services.Topic.Version1;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
+using System;
 using Windows.UI.Xaml.Controls;
 
 namespace CNodeUwp.ViewModels
@@ -37,14 +38,19 @@ namespace CNodeUwp.ViewModels
             }
         }
 
-        public RelayCommand FilterCommand
+        public RelayCommand<string> FilterCommand
         {
             get
             {
-                return new RelayCommand(() =>
+                return new RelayCommand<string>((tab) =>
                            {
-                               //await GetTopics(1, TopicTabType.All);
-                               //_navigationService.NavigateTo("About");
+                               TopicTabType tabType = TopicTabType.All;
+                               if (Enum.TryParse(tab, out tabType))
+                               {
+                                   TabType = tabType;
+                                   GetTopics();
+                               }
+
                            });
             }
         }

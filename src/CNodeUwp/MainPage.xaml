@@ -13,15 +13,15 @@
 
     <Page.BottomAppBar>
         <CommandBar ClosedDisplayMode="Compact">
-            <AppBarButton Icon="Add" Label="新话题"></AppBarButton>
+            <!--<AppBarButton Icon="Add" Label="新话题"></AppBarButton>-->
             <AppBarButton Icon="Filter" Label="筛选">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Text="全部"></MenuFlyoutItem>
-                        <MenuFlyoutItem Text="精华帖"></MenuFlyoutItem>
-                        <MenuFlyoutItem Text="问答帖"></MenuFlyoutItem>
-                        <MenuFlyoutItem Text="分享帖"></MenuFlyoutItem>
-                        <MenuFlyoutItem Text="招聘帖"></MenuFlyoutItem>
+                        <MenuFlyoutItem Text="全部" Command="{Binding FilterCommand}" CommandParameter="0"></MenuFlyoutItem>
+                        <MenuFlyoutItem Text="问答帖" Command="{Binding FilterCommand}" CommandParameter="1"></MenuFlyoutItem>
+                        <MenuFlyoutItem Text="分享帖" Command="{Binding FilterCommand}" CommandParameter="2"></MenuFlyoutItem>
+                        <MenuFlyoutItem Text="招聘帖" Command="{Binding FilterCommand}" CommandParameter="3"></MenuFlyoutItem>
+                        <MenuFlyoutItem Text="精华帖" Command="{Binding FilterCommand}" CommandParameter="4"></MenuFlyoutItem>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
