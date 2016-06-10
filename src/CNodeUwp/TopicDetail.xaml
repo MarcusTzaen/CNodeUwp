@@ -22,26 +22,39 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="36"></RowDefinition>
+            <RowDefinition Height="12"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
-            <TextBlock Text="{Binding Topic.Result.Title, Mode=TwoWay}" Style="{StaticResource TopicTitle}"></TextBlock>
-        </ScrollViewer>
-        <TextBlock Grid.Row="1" Text="Loading..." HorizontalAlignment="Center"
+        <StackPanel Grid.Row="0" >
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Disabled">
+                <TextBlock Text="{Binding Topic.Result.Title, Mode=TwoWay}" Style="{StaticResource TopicTitle}"></TextBlock>
+            </ScrollViewer>
+        </StackPanel>
+        <Border Grid.Row="1" Background="Gray" Height="1" Opacity="0.1" VerticalAlignment="Bottom"></Border>
+        
+        <TextBlock Grid.Row="2" Text="Loading..." HorizontalAlignment="Center"
                    Visibility="{Binding Topic.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"></TextBlock>
-        <ScrollViewer Grid.Row="1" Visibility="{Binding Topic.IsCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
-                      Margin="12 12 12 0" VerticalScrollBarVisibility="Hidden">
-            <Grid>
+        <ScrollViewer Grid.Row="2" 
+                      Visibility="{Binding Topic.IsCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
+                      Margin="12 0 12 0" 
+                      VerticalScrollBarVisibility="Hidden">
+            <Grid Margin="0 12 0 0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="{Binding Topic.Result.Content}" HorizontalAlignment="Center"  TextWrapping="Wrap"
+                <TextBlock Grid.Row="0" 
+                           Text="{Binding Topic.Result.Content}" 
+                           HorizontalAlignment="Center"  
+                           TextWrapping="Wrap"
+                           Visibility="{Binding Topic.IsCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"></TextBlock>
+                <TextBlock Grid.Row="1" Text="{Binding Topic.Result.TopicReplyDescription}" HorizontalAlignment="Left" Margin="0 12 0 0"
                    Visibility="{Binding Topic.IsCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"></TextBlock>
-                <ListView Grid.Row="1"
+                <ListView Grid.Row="2"
                           ItemsSource="{Binding Topic.Result.Replies, Mode=TwoWay}" 
-                              ItemContainerStyle="{StaticResource TopicListItem}" 
-                              Style="{StaticResource TopicList}"
+                              ItemContainerStyle="{StaticResource ReplyItem}" 
+                              Style="{StaticResource ReplyList}"
                               SelectionMode="None"
                               IsItemClickEnabled="True"
                               >
@@ -52,15 +65,41 @@
                     </Interactivity:Interaction.Behaviors>-->
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid >
+                            <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="24"></RowDefinition>
                                     <RowDefinition Height="24"></RowDefinition>
+                                    <RowDefinition Height="24"></RowDefinition>
+                                    <RowDefinition Height="1*"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                
-                                <TextBlock Grid.Row="0" Text="{Binding Content, Mode =TwoWay}" 
-                                           Style="{StaticResource TopicDescription}"
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="48"></ColumnDefinition>
+                                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Image Grid.Row="1"
+                                       Grid.RowSpan="2" 
+                                       Grid.Column="0" 
+                                       Height="48"
+                                       Width="48"
+                                       VerticalAlignment="Top"
+                                       Source="{Binding Author.Avatar, Mode=TwoWay}"></Image>
+                                <TextBlock Grid.Row="1" 
+                                           Grid.Column="1" 
+                                           Style="{StaticResource ReplyUser}"
+                                           Text="{Binding Author.LoginName, Mode=TwoWay}"></TextBlock>
+                                <TextBlock Grid.Row="2" 
+                                           Grid.RowSpan="2"
+                                           Grid.Column="1"
+                                           Text="{Binding Content, Mode =TwoWay}" 
+                                           Style="{StaticResource ReplyContent}"
                                            TextWrapping="Wrap"></TextBlock>
+                                <Border Grid.Row="0"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="2"
+                                        Height="2" 
+                                        VerticalAlignment="Center"
+                                        Opacity="0.1"
+                                        Background="Gray"></Border>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>

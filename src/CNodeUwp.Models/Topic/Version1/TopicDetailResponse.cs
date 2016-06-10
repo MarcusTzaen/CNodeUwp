@@ -12,5 +12,13 @@ namespace CNodeUwp.Models.Topic.Version1
         /// </summary>
         [JsonProperty("is_collect")]
         public bool IsCollected { get; set; }
+
+        public string TopicReplyDescription
+        {
+            get
+            {
+                return $"评论列表（{RepliedCount}）";
+            }
+        }
     }
 }

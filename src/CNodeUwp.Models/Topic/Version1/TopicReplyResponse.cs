@@ -2,11 +2,17 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CNodeUwp.Models.Topic.Version1
 {
     public class TopicReplyResponse
     {
+        public TopicReplyResponse()
+        {
+            UpUsers = new List<string>();
+        }
+
         public string Id { get; set; }
 
         /// <summary>
@@ -23,6 +29,17 @@ namespace CNodeUwp.Models.Topic.Version1
         /// 点赞的用户
         /// </summary>
         public IEnumerable<string> UpUsers { get; set; }
+
+        /// <summary>
+        /// 点赞总数
+        /// </summary>
+        public int UpCount
+        {
+            get
+            {
+                return UpUsers.Count();
+            }
+        }
 
         [JsonProperty("create_at")]
         public DateTime CreatedAt { get; set; }

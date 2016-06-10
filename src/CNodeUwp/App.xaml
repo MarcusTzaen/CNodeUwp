@@ -22,32 +22,61 @@
             <Setter Property="Margin" Value="12 0 12 0"></Setter>
         </Style>
 
+        <!--列表页-->
         <Style TargetType="ListView" x:Name="TopicList">
             <Setter Property="Margin" Value="0 0 0 0"></Setter>
             <Setter Property="ScrollViewer.VerticalScrollMode" Value="Enabled"></Setter>
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"></Setter>
         </Style>
-        
         <Style TargetType="ListViewItem" x:Name="TopicListItem">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ListViewItem">
-                        <ListViewItemPresenter Margin="0 0 0 12" />
+                        <ListViewItemPresenter Margin="0 0 0 12"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            
         </Style>
-
         <Style TargetType="TextBlock" x:Name="TopicDescription">
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
             <Setter Property="FontSize" Value="10"></Setter>
             <Setter Property="Foreground" Value="Gray"></Setter>
         </Style>
 
+        <!--话题详情页-->
         <Style TargetType="TextBlock" x:Name="TopicTitle">
             <Setter Property="Margin" Value="12 12 12 0"></Setter>
+            <Setter Property="VerticalAlignment" Value="Bottom"></Setter>
         </Style>
+        
+        <!--评论列表-->
+        <Style TargetType="ListView" x:Name="ReplyList">
+            <Setter Property="Margin" Value="0 0 0 0"></Setter>
+            <Setter Property="ScrollViewer.VerticalScrollMode" Value="Enabled"></Setter>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"></Setter>
+        </Style>
+        <Style TargetType="ListViewItem" x:Name="ReplyItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <ListViewItemPresenter Margin="0 0 0 0" Background="Azure" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style TargetType="TextBlock" x:Name="ReplyUser">
+            <Setter Property="Margin" Value="12 0 0 0"></Setter>
+            <Setter Property="Foreground" Value="Black"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+        </Style>
+        <Style TargetType="TextBlock" x:Name="ReplyContent">
+            <Setter Property="Margin" Value="12 0 0 0"></Setter>
+            <Setter Property="Foreground" Value="Gray"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+        </Style>
+
+        
 
 
 
