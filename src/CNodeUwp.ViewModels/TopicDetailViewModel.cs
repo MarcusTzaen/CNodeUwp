@@ -1,6 +1,6 @@
 ﻿using CNodeUwp.Common;
 using CNodeUwp.Models.Topic.Version1;
-using CNodeUwp.Services;
+using CNodeUwp.Services.Topic.Version1;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;

@@ -1,11 +1,10 @@
 ﻿using CNodeUwp.Common;
 using CNodeUwp.Models.Topic.Version1;
-using CNodeUwp.Services;
+using CNodeUwp.Services.Common.Version1;
+using CNodeUwp.Services.Topic.Version1;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
-using System.Collections.ObjectModel;
-using System.Threading;
 using Windows.UI.Xaml.Controls;
 
 namespace CNodeUwp.ViewModels
@@ -18,13 +17,23 @@ namespace CNodeUwp.ViewModels
 
         private TopicTabType TabType { get; set; } = TopicTabType.All;
 
-        private NotifyTaskCompletion<ObservableCollection<TopicResponse>> _topics;
-        public NotifyTaskCompletion<ObservableCollection<TopicResponse>> Topics
+        private PaginatedCollection<TopicResponse> _topics;
+        public PaginatedCollection<TopicResponse> Topics
         {
             get { return _topics; }
             set
             {
                 Set(nameof(Topics), ref _topics, value);
+            }
+        }
+
+        private bool _isLoadingCompleted;
+        public bool IsLoadingCompleted
+        {
+            get { return _isLoadingCompleted; }
+            set
+            {
+                Set(nameof(IsLoadingCompleted), ref _isLoadingCompleted, value);
             }
         }
 
@@ -46,7 +55,7 @@ namespace CNodeUwp.ViewModels
             {
                 return new RelayCommand(() =>
                 {
-                    GetTopics(1);
+                    GetTopics();
                 });
             }
         }
@@ -69,17 +78,19 @@ namespace CNodeUwp.ViewModels
         {
             _navigationService = navigationService;
             _dialogService = dialogService;
-            GetTopics(1);
+            GetTopics();
         }
 
-        private void GetTopics(int pageNumber, CancellationToken cancellationToken = default(CancellationToken))
+        private void GetTopics()
         {
-            var response = TopicService.GetTopicListAsync(new TopicPageRequest()
+            Topics = new PaginatedCollection<TopicResponse>((c) =>
             {
-                Page = pageNumber,
-                Tab = TabType,
-            }, cancellationToken);
-            Topics = new NotifyTaskCompletion<ObservableCollection<TopicResponse>>(response);
+                return TopicService.GetTopicListAsync(new TopicPageRequest()
+                {
+                    Page = c,
+                    Tab = TabType,
+                });
+            });
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CNodeUwp.Services
+namespace CNodeUwp.Services.Topic.Version1
 {
     public class TopicService
     {

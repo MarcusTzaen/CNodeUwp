@@ -7,6 +7,8 @@ namespace CNodeUwp.UserControls
 {
     public sealed partial class TextWithImages : UserControl
     {
+        private static bool IsSetTopProperty = false;
+        private static bool IsSetExcellentProperty = false;
         public bool IsTop
         {
             get { return (bool)GetValue(IsTopProperty); }
@@ -17,24 +19,32 @@ namespace CNodeUwp.UserControls
               nameof(IsTop),
               typeof(bool),
               typeof(TextWithImages),
-              new PropertyMetadata(null, new PropertyChangedCallback((d, e) =>
+              new PropertyMetadata(false, new PropertyChangedCallback((d, e) =>
               {
-                  TextWithImages twi = d as TextWithImages;
-                  bool s = (bool)e.NewValue;
-                  int margin = 0;
-                  if (s)
-                  {
-                      margin = 24;
-                      twi.imgTopIcon.Visibility = Visibility.Visible;
-                  }
+                  //if (e.OldValue != e.NewValue && !IsSetTopProperty)
+                  //{
+                  //    TextWithImages twi = d as TextWithImages;
+                  //    bool s = (bool)e.NewValue;
+                  //    int margin = 0;
+                  //    if (s)
+                  //    {
+                  //        margin = 24;
+                  //        twi.imgTopIcon.Visibility = Visibility.Visible;
+                  //    }
+                  //    else
+                  //    {
+                  //        margin = -24;
+                  //    }
 
-                  var excellentIconMargin = twi.imgExcellentIcon.Margin;
-                  excellentIconMargin.Left += margin;
-                  twi.imgExcellentIcon.Margin = excellentIconMargin;
+                  //    var excellentIconMargin = twi.imgExcellentIcon.Margin;
+                  //    excellentIconMargin.Left += margin;
+                  //    twi.imgExcellentIcon.Margin = excellentIconMargin;
 
-                  var titleMargin = twi.tbTitle.Margin;
-                  titleMargin.Left += margin;
-                  twi.tbTitle.Margin = titleMargin;
+                  //    var titleMargin = twi.tbTitle.Margin;
+                  //    titleMargin.Left += margin;
+                  //    twi.tbTitle.Margin = titleMargin;
+                  //    IsSetTopProperty = true;
+                  //}
               }))
             );
 
@@ -48,20 +58,28 @@ namespace CNodeUwp.UserControls
               nameof(IsExcellent),
               typeof(bool),
               typeof(TextWithImages),
-              new PropertyMetadata(null, new PropertyChangedCallback((d, e) =>
+              new PropertyMetadata(false, new PropertyChangedCallback((d, e) =>
               {
-                  TextWithImages twi = d as TextWithImages;
-                  bool s = (bool)e.NewValue;
-                  int margin = 0;
-                  if (s)
-                  {
-                      margin = 24;
-                      twi.imgExcellentIcon.Visibility = Visibility.Visible;
-                  }
+                  //if (e.OldValue != e.NewValue && !IsSetExcellentProperty)
+                  //{
+                  //    TextWithImages twi = d as TextWithImages;
+                  //    bool s = (bool)e.NewValue;
+                  //    int margin = 0;
+                  //    if (s)
+                  //    {
+                  //        margin = 24;
+                  //        twi.imgExcellentIcon.Visibility = Visibility.Visible;
+                  //    }
+                  //    else
+                  //    {
+                  //        margin = -24;
+                  //    }
 
-                  var titleMargin = twi.tbTitle.Margin;
-                  titleMargin.Left += margin;
-                  twi.tbTitle.Margin = titleMargin;
+                  //    var titleMargin = twi.tbTitle.Margin;
+                  //    titleMargin.Left += margin;
+                  //    twi.tbTitle.Margin = titleMargin;
+                  //    IsSetExcellentProperty = true;
+                  //}
               }))
             );
 

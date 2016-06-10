@@ -43,14 +43,15 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Text="Loading..." HorizontalAlignment="Center"
-                               Visibility="{Binding Topics.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"></TextBlock>
-                    <ListView Grid.Row="0" ItemsSource="{Binding Topics.Result, Mode=TwoWay}" 
+                    <!--<TextBlock Grid.Row="0" Text="Loading..." HorizontalAlignment="Center"
+                               Visibility="{Binding Topics.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"></TextBlock>-->
+                    <ListView Grid.Row="0" ItemsSource="{Binding Topics, Mode=TwoWay}" 
                               ItemContainerStyle="{StaticResource TopicListItem}" 
                               Style="{StaticResource TopicList}"
-                              Visibility="{Binding Topics.IsSuccessfullyCompleted, Converter={StaticResource BooleanToVisibilityConverter}}"
                               SelectionMode="None"
                               IsItemClickEnabled="True"
+                              DataFetchSize="3"
+                              IncrementalLoadingThreshold="0"
                               >
                         <Interactivity:Interaction.Behaviors>
                             <Interactions:EventTriggerBehavior EventName="ItemClick">
@@ -64,12 +65,11 @@
                                         <RowDefinition Height="24"></RowDefinition>
                                         <RowDefinition Height="24"></RowDefinition>
                                     </Grid.RowDefinitions>
-                                    <uc:TextWithImages Grid.Row="0" 
-                                                       IsTop="{Binding IsTop, Mode=TwoWay}"
-                                                       IsExcellent="{Binding IsGood, Mode=TwoWay}"
-                                                       Title="{Binding Title, Mode=TwoWay}"
-                                                       ></uc:TextWithImages>
-                                    <TextBlock Grid.Row="1" Text="{Binding TopicDescription, Mode =TwoWay}" Style="{StaticResource TopicDescription}"></TextBlock>
+                                    <TextBlock Grid.Row="0" 
+                                               Text="{Binding TitleWithIcon, Mode=TwoWay}"></TextBlock>
+                                    <TextBlock Grid.Row="1" 
+                                               Text="{Binding TopicDescription, Mode =TwoWay}" 
+                                               Style="{StaticResource TopicDescription}"></TextBlock>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>

@@ -1,7 +1,7 @@
-﻿using CNodeUwp.Models.User.Version1;
+﻿using CNodeUwp.Common;
+using CNodeUwp.Models.User.Version1;
 using Newtonsoft.Json;
 using System;
-using CNodeUwp.Common;
 
 namespace CNodeUwp.Models.Topic.Version1
 {
@@ -27,6 +27,17 @@ namespace CNodeUwp.Models.Topic.Version1
         /// 标题
         /// </summary>
         public string Title { get; set; }
+
+        public string TitleWithIcon
+        {
+            get
+            {
+                return string.Format("{0}{1}{2}"
+                    , IsTop ? "[顶]" : ""
+                    , IsGood ? "[精]" : ""
+                    , Title);
+            }
+        }
 
         /// <summary>
         /// 内容
