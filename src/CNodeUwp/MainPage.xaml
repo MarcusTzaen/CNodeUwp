@@ -26,8 +26,9 @@
                 </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarButton Icon="Refresh" Label="刷新" Command="{Binding RefreshCommand}"></AppBarButton>
+            <!--<AppBarButton Icon="Up" Label="回到顶部" Click="AppBarButton_Click"></AppBarButton>-->
             <CommandBar.SecondaryCommands>
-                <AppBarButton Icon="like" Label="喜欢"></AppBarButton>
+                <AppBarButton Label="意见反馈"></AppBarButton>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
@@ -45,7 +46,9 @@
                     </Grid.RowDefinitions>
                     <!--<TextBlock Grid.Row="0" Text="Loading..." HorizontalAlignment="Center"
                                Visibility="{Binding Topics.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"></TextBlock>-->
-                    <ListView Grid.Row="0" ItemsSource="{Binding Topics, Mode=TwoWay}" 
+                    <ListView Grid.Row="0" 
+                              Name="lvTopics"
+                              ItemsSource="{Binding Topics, Mode=TwoWay}" 
                               ItemContainerStyle="{StaticResource TopicListItem}" 
                               Style="{StaticResource TopicList}"
                               SelectionMode="None"

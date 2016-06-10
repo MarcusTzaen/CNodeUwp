@@ -14,5 +14,9 @@ namespace CNodeUwp
             NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
+        //private void AppBarButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        //{
+        //    lvTopics.ScrollIntoView(lvTopics.Items[0], ScrollIntoViewAlignment.Leading);
+        //}
     }
 }
