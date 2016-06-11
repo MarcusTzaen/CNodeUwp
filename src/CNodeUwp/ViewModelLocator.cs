@@ -15,6 +15,7 @@ namespace CNodeUwp
             var nav = new NavigationService();
             nav.Configure(Consts.TOPIC_LIST_PAGE_KEY, typeof(MainPage));
             nav.Configure(Consts.TOPIC_DETAIL_PAGE_KEY, typeof(TopicDetail));
+            nav.Configure(Consts.FEEDBACK_PAGE_KEY, typeof(Feedback));
             nav.Configure(Consts.ABOUT_PAGE_KEY, typeof(AboutPage));
 
 
@@ -34,6 +35,7 @@ namespace CNodeUwp
             SimpleIoc.Default.Register<MainPageViewModel>();
             SimpleIoc.Default.Register<TopicDetailViewModel>();
             SimpleIoc.Default.Register<AboutPageViewModel>();
+            SimpleIoc.Default.Register<FeedbackViewModel>();
         }
 
         public MainPageViewModel MainPageVm => ServiceLocator.Current.GetInstance<MainPageViewModel>();
@@ -41,5 +43,7 @@ namespace CNodeUwp
         public TopicDetailViewModel TopicDetailVm => ServiceLocator.Current.GetInstance<TopicDetailViewModel>();
 
         public AboutPageViewModel AboutPageVm => ServiceLocator.Current.GetInstance<AboutPageViewModel>();
+
+        public FeedbackViewModel FeedbackVm => ServiceLocator.Current.GetInstance<FeedbackViewModel>();
     }
 }

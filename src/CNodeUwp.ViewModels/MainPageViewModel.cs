@@ -66,6 +66,17 @@ namespace CNodeUwp.ViewModels
             }
         }
 
+        public RelayCommand FeedbackCommand
+        {
+            get
+            {
+                return new RelayCommand(() =>
+                {
+                    _navigationService.NavigateTo(Consts.FEEDBACK_PAGE_KEY, this);
+                });
+            }
+        }
+
         public RelayCommand<ItemClickEventArgs> GoToDetailCommand
         {
             get

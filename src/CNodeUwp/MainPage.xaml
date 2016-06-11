@@ -29,7 +29,7 @@
             <AppBarButton Icon="Refresh" Label="刷新" Command="{Binding RefreshCommand}"></AppBarButton>
             <!--<AppBarButton Icon="Up" Label="回到顶部" Click="AppBarButton_Click"></AppBarButton>-->
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="意见反馈"></AppBarButton>
+                <AppBarButton Label="反馈" Command="{Binding FeedbackCommand}"></AppBarButton>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
