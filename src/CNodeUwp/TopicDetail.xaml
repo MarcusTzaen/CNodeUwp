@@ -92,7 +92,8 @@
                                            Grid.Column="1"
                                            Text="{Binding Content, Mode =TwoWay}" 
                                            Style="{StaticResource ReplyContent}"
-                                           TextWrapping="Wrap"></TextBlock>
+                                           TextWrapping="Wrap">
+                                </TextBlock>
                                 <Border Grid.Row="0"
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"

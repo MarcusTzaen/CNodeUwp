@@ -27,7 +27,7 @@
                 </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarButton Icon="Refresh" Label="刷新" Command="{Binding RefreshCommand}"></AppBarButton>
-            <!--<AppBarButton Icon="Up" Label="回到顶部" Click="AppBarButton_Click"></AppBarButton>-->
+            <AppBarButton Icon="Scan" Label="扫码登录" Command="{Binding ScanCommand}"></AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="反馈" Command="{Binding FeedbackCommand}"></AppBarButton>
             </CommandBar.SecondaryCommands>
@@ -45,6 +45,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"></RowDefinition>
                     </Grid.RowDefinitions>
+                    
                     <!--<TextBlock Grid.Row="0" Text="Loading..." HorizontalAlignment="Center"
                                Visibility="{Binding Topics.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"></TextBlock>-->
                     <pr:PullToRefreshBox RefreshThreshold="96">
@@ -92,6 +93,7 @@
                                 </pr:PullRefreshProgressControl>
                             </DataTemplate>
                         </pr:PullToRefreshBox.TopIndicatorTemplate>-->
+                        
                         <ListView Grid.Row="0" 
                             Name="lvTopics"
                             ItemsSource="{Binding Topics, Mode=TwoWay}" 

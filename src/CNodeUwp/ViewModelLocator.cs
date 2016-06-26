@@ -17,6 +17,7 @@ namespace CNodeUwp
             nav.Configure(Consts.TOPIC_DETAIL_PAGE_KEY, typeof(TopicDetail));
             nav.Configure(Consts.FEEDBACK_PAGE_KEY, typeof(Feedback));
             nav.Configure(Consts.ABOUT_PAGE_KEY, typeof(AboutPage));
+            nav.Configure(Consts.SCANNING_PAGE_KEY, typeof(Scanning));
 
 
             SimpleIoc.Default.Register<INavigationService>(() => nav);

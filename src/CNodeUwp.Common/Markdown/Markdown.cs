@@ -8,7 +8,9 @@
 //using Windows.UI.Xaml.Controls;
 //using Windows.UI.Xaml.Data;
 //using Windows.UI.Xaml.Documents;
+//using Windows.UI.Xaml.Media;
 //using Windows.UI.Xaml.Media.Imaging;
+//using Windows.UI.Xaml.Shapes;
 
 //namespace Markdown.Xaml
 //{
@@ -398,7 +400,7 @@
 //            }
 //            catch (Exception)
 //            {
-//                return new Run("!" + url) { Foreground = Brushes.Red };
+//                return new Run("!" + url) { Foreground = Brush. };
 //            }
 
 //            Image image = new Image { Source = imgSource, Tag = linkText };
@@ -414,7 +416,7 @@
 //            // Bind size so document is updated when image is downloaded
 //            if (imgSource.IsDownloading)
 //            {
-//                Binding binding = new Binding(nameof(BitmapImage.Width));
+//                Binding binding = new Binding(nameof(BitmapImage.PixelWidth));
 //                binding.Source = imgSource;
 //                binding.Mode = BindingMode.OneWay;
 
@@ -429,7 +431,7 @@
 //            }
 //            else
 //            {
-//                image.Width = imgSource.Width;
+//                image.Width = imgSource.PixelWidth;
 //            }
 
 //            return new InlineUIContainer(image);
@@ -545,14 +547,14 @@
 //            return CreateHeader(level, RunSpanGamut(header));
 //        }
 
-//        public Block CreateHeader(int level, IEnumerable<Inline> content)
+//        public TextBlock CreateHeader(int level, IEnumerable<Inline> content)
 //        {
 //            if (content == null)
 //            {
 //                throw new ArgumentNullException("content");
 //            }
 
-//            var block = Create<Paragraph, Inline>(content);
+//            var block = Create<Run, Inline>(content);
 
 //            switch (level)
 //            {
@@ -833,7 +835,7 @@
 //            span = Regex.Replace(span, @"^[ ]*", ""); // leading whitespace
 //            span = Regex.Replace(span, @"[ ]*$", ""); // trailing whitespace
 
-//            var result = new Run(span);
+//            var result = new Run() { Text = span };
 //            if (CodeStyle != null)
 //            {
 //                result.Style = CodeStyle;
@@ -1043,7 +1045,7 @@
 //            }
 
 //            var t = _eoln.Replace(text, " ");
-//            yield return new Run(t);
+//            yield return new Run() { Text = t };
 //        }
 //    }
 //}
