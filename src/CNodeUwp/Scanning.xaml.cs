@@ -10,6 +10,7 @@ using Windows.Foundation;
 using Windows.Graphics.Display;
 using Windows.Graphics.Imaging;
 using Windows.Media.Capture;
+using Windows.Media.Devices;
 using Windows.Media.MediaProperties;
 using Windows.Storage.Streams;
 using Windows.System.Display;
@@ -71,9 +72,28 @@ namespace CNodeUwp
                     StreamingCaptureMode = StreamingCaptureMode.Video,
                     MediaCategory = MediaCategory.Other,
                     AudioProcessing = Windows.Media.AudioProcessing.Default,
-                    VideoDeviceId = cameraDevice.Id
+                    VideoDeviceId = cameraDevice.Id,
+                    PhotoCaptureSource = PhotoCaptureSource.VideoPreview,
                 };
                 await _mediaCapture.InitializeAsync(settings);
+
+                var focusControl = _mediaCapture.VideoDeviceController.FocusControl;
+
+                if (focusControl.Supported)
+                {
+                    var focusSettings = new FocusSettings()
+                    {
+                        Mode = focusControl.SupportedFocusModes.FirstOrDefault(f => f == FocusMode.Continuous),
+                        DisableDriverFallback = true,
+                        AutoFocusRange = focusControl.SupportedFocusRanges.FirstOrDefault(f => f == AutoFocusRange.FullRange),
+                        Distance = focusControl.SupportedFocusDistances.FirstOrDefault(f => f == ManualFocusDistance.Nearest)
+                    };
+
+                    //设置聚焦，最好使用FocusMode.Continuous，否则影响截图会很模糊，不利于识别
+                    focusControl.Configure(focusSettings);
+                }
+
+
                 VideoCapture.Source = _mediaCapture;
                 _mediaCapture.SetPreviewRotation(VideoRotation.Clockwise90Degrees);
                 await _mediaCapture.StartPreviewAsync();
@@ -122,7 +142,7 @@ namespace CNodeUwp
                 };
 
                 var timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromSeconds(3);
+                timer.Interval = TimeSpan.FromMilliseconds(50);
                 timer.Tick += _timer_Tick;
                 timer.Start();
 
