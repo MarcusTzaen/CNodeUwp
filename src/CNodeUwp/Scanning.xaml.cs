@@ -1,28 +1,27 @@
 ﻿using System;
-using System.Threading;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Sensors;
+using Windows.Foundation;
 using Windows.Graphics.Display;
+using Windows.Graphics.Imaging;
 using Windows.Media.Capture;
 using Windows.Media.MediaProperties;
-using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.System.Display;
 using Windows.UI.Core;
-using Windows.UI.Popups;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 using ZXing;
 using ZXing.Common;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace CNodeUwp
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class Scanning : Page
     {
         private readonly DisplayRequest _displayRequest = new DisplayRequest();
@@ -33,13 +32,11 @@ namespace CNodeUwp
 
         private MediaCapture _mediaCapture;
 
-        private bool _externalCamera = false;
+        public static Size MaxSizeSupported = new Size(4000, 3000);
 
-        private bool _mirroringPreview;
+        private Result _result;
 
-        private bool _isPreviewing = true;
-
-        private static readonly Guid RotationKey = new Guid("C380465D-2271-428C-9B83-ECEA3B4A85C1");
+        private bool IsBusy;
 
         public Scanning()
         {
@@ -60,36 +57,53 @@ namespace CNodeUwp
             try
             {
                 _displayRequest.RequestActive();
-                //_displayOrientation = _displayInformation.CurrentOrientation;
 
                 _mediaCapture = new MediaCapture();
-                var devices = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture);
-                MediaCaptureInitializationSettings settings = new MediaCaptureInitializationSettings
+                var cameraDevice = await FindCameraDeviceByPanelAsync(Windows.Devices.Enumeration.Panel.Back);
+
+                if (cameraDevice == null)
                 {
-                    VideoDeviceId = devices[0].Id
-                }; // 0 => front, 1 => back
-
-                await _mediaCapture.InitializeAsync(settings);
-
-                VideoEncodingProperties resolutionMax = null;
-                int max = 0;
-                var resolutions = _mediaCapture.VideoDeviceController.GetAvailableMediaStreamProperties(MediaStreamType.Photo);
-
-                for (var i = 0; i < resolutions.Count; i++)
-                {
-                    VideoEncodingProperties res = (VideoEncodingProperties)resolutions[i];
-                    if (res.Width * res.Height > max)
-                    {
-                        max = (int)(res.Width * res.Height);
-                        resolutionMax = res;
-                    }
+                    Debug.WriteLine("No camera device found!");
+                    return;
                 }
-
-                await _mediaCapture.VideoDeviceController.SetMediaStreamPropertiesAsync(MediaStreamType.Photo, resolutionMax);
-                capturePreview.Source = _mediaCapture;
-                //RegisterOrientationEventHandlers();
+                var settings = new MediaCaptureInitializationSettings
+                {
+                    StreamingCaptureMode = StreamingCaptureMode.Video,
+                    MediaCategory = MediaCategory.Other,
+                    AudioProcessing = Windows.Media.AudioProcessing.Default,
+                    VideoDeviceId = cameraDevice.Id
+                };
+                await _mediaCapture.InitializeAsync(settings);
+                VideoCapture.Source = _mediaCapture;
                 _mediaCapture.SetPreviewRotation(VideoRotation.Clockwise90Degrees);
                 await _mediaCapture.StartPreviewAsync();
+                //var devices = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture);
+                //MediaCaptureInitializationSettings settings = new MediaCaptureInitializationSettings
+                //{
+                //    VideoDeviceId = devices[0].Id
+                //}; // 0 => front, 1 => back
+
+                //await _mediaCapture.InitializeAsync(settings);
+
+                //VideoEncodingProperties resolutionMax = null;
+                //int max = 0;
+                //var resolutions = _mediaCapture.VideoDeviceController.GetAvailableMediaStreamProperties(MediaStreamType.Photo);
+
+                //for (var i = 0; i < resolutions.Count; i++)
+                //{
+                //    VideoEncodingProperties res = (VideoEncodingProperties)resolutions[i];
+                //    if (res.Width * res.Height > max)
+                //    {
+                //        max = (int)(res.Width * res.Height);
+                //        resolutionMax = res;
+                //    }
+                //}
+
+                //await _mediaCapture.VideoDeviceController.SetMediaStreamPropertiesAsync(MediaStreamType.Photo, resolutionMax);
+                //capturePreview.Source = _mediaCapture;
+                ////RegisterOrientationEventHandlers();
+                //_mediaCapture.SetPreviewRotation(VideoRotation.Clockwise90Degrees);
+                //await _mediaCapture.StartPreviewAsync();
                 _orientationSensor.OrientationChanged += (s, arg) =>
                 {
                     switch (arg.Orientation)
@@ -107,44 +121,157 @@ namespace CNodeUwp
                     }
                 };
 
-                TimerCallback callBack = new TimerCallback(async (o) =>
-                {
+                var timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromSeconds(3);
+                timer.Tick += _timer_Tick;
+                timer.Start();
 
-                    ImageEncodingProperties imgFormat = ImageEncodingProperties.CreateJpeg();
-                    // create storage file in local app storage
-                    StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(
-                    "temp.jpg",
-                    CreationCollisionOption.GenerateUniqueName);
-                    // take photo
-                    await _mediaCapture.CapturePhotoToStorageFileAsync(imgFormat, file);
-                    // Get photo as a BitmapImage
-                    //BitmapImage bmpImage = new BitmapImage(new Uri(file.Path));
-                    WriteableBitmap bitmap = new WriteableBitmap(1920, 1080);
-                    using (IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.Read))
-                    {
-                        await bitmap.SetSourceAsync(fileStream);
-                    }
-                    //bmpImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-
-
-                    IBarcodeReader reader = new BarcodeReader()
-                    {
-                        Options = new DecodingOptions()
-                        {
-                            PossibleFormats = new BarcodeFormat[] { BarcodeFormat.QR_CODE },
-                        }
-                    };
-                    var result = reader.Decode(bitmap);
-                    await new MessageDialog(result?.Text ?? "什么都没找到").ShowAsync();
-                    //timer.Change(4000, Timeout.Infinite);
-                });
-                var timer = new Timer(callBack, null, TimeSpan.FromSeconds(4), TimeSpan.FromSeconds(6));
             }
             catch (Exception ex)
             {
-                await new MessageDialog(ex.ToString()).ShowAsync();
-                //await _dialogService.ShowMessage(ex.ToString(), "error");
+                Debug.WriteLine(ex.ToString());
             }
+        }
+
+        private async void _timer_Tick(object sender, object e)
+        {
+            try
+            {
+                Debug.WriteLine(@"[INFO]开始扫描 -> " + DateTime.Now.ToString());
+                if (!IsBusy)
+                {
+                    IsBusy = true;
+                    IRandomAccessStream stream = new InMemoryRandomAccessStream();
+                    await _mediaCapture.CapturePhotoToStreamAsync(ImageEncodingProperties.CreateJpeg(), stream);
+
+                    var writeableBmp = await ReadBitmap(stream, ".jpg");
+
+                    await Task.Factory.StartNew(async () => { await ScanBitmap(writeableBmp); });
+                }
+                IsBusy = false;
+                await Task.Delay(50);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                IsBusy = false;
+            }
+        }
+
+        /// <summary>  
+        /// 解析二维码图片  
+        /// </summary>  
+        /// <param name="writeableBmp">图片</param>  
+        /// <returns></returns>  
+        private async Task ScanBitmap(WriteableBitmap writeableBmp)
+        {
+            try
+            {
+                var barcodeReader = new BarcodeReader()
+                {
+                    AutoRotate = true,
+                    Options = new DecodingOptions
+                    {
+                        TryHarder = true,
+                        PossibleFormats = new BarcodeFormat[] { BarcodeFormat.QR_CODE },
+                    },
+                };
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    _result = barcodeReader.Decode(writeableBmp);
+                });
+
+
+
+                if (_result != null)
+                {
+                    Debug.WriteLine(@"[INFO]扫描到二维码:{result}   ->" + _result.Text);
+                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                    {
+                        tbkResult.Text = _result.Text;
+                    });
+                }
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        /// <summary>
+        /// 读取照片流 转为WriteableBitmap给二维码解码器
+        /// </summary>
+        /// <param name="fileStream"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public async static Task<WriteableBitmap> ReadBitmap(IRandomAccessStream fileStream, string type)
+        {
+            WriteableBitmap bitmap = null;
+            try
+            {
+                Guid decoderId = DecoderIDFromFileExtension(type);
+
+                BitmapDecoder decoder = await BitmapDecoder.CreateAsync(decoderId, fileStream);
+                BitmapTransform tf = new BitmapTransform();
+
+                uint width = decoder.OrientedPixelWidth;
+                uint height = decoder.OrientedPixelHeight;
+                double dScale = 1;
+
+                if (decoder.OrientedPixelWidth > MaxSizeSupported.Width || decoder.OrientedPixelHeight > MaxSizeSupported.Height)
+                {
+                    dScale = Math.Min(MaxSizeSupported.Width / decoder.OrientedPixelWidth, MaxSizeSupported.Height / decoder.OrientedPixelHeight);
+                    width = (uint)(decoder.OrientedPixelWidth * dScale);
+                    height = (uint)(decoder.OrientedPixelHeight * dScale);
+
+                    tf.ScaledWidth = (uint)(decoder.PixelWidth * dScale);
+                    tf.ScaledHeight = (uint)(decoder.PixelHeight * dScale);
+                }
+
+
+                bitmap = new WriteableBitmap((int)width, (int)height);
+
+                PixelDataProvider dataprovider = await decoder.GetPixelDataAsync(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Straight, tf,
+                    ExifOrientationMode.RespectExifOrientation, ColorManagementMode.DoNotColorManage);
+                byte[] pixels = dataprovider.DetachPixelData();
+
+                Stream pixelStream2 = bitmap.PixelBuffer.AsStream();
+
+                pixelStream2.Write(pixels, 0, pixels.Length);
+            }
+            catch
+            {
+            }
+
+            return bitmap;
+        }
+
+        static Guid DecoderIDFromFileExtension(string strExtension)
+        {
+            Guid encoderId;
+            switch (strExtension.ToLower())
+            {
+                case ".jpg":
+                case ".jpeg":
+                    encoderId = BitmapDecoder.JpegDecoderId;
+                    break;
+                case ".bmp":
+                    encoderId = BitmapDecoder.BmpDecoderId;
+                    break;
+                case ".png":
+                default:
+                    encoderId = BitmapDecoder.PngDecoderId;
+                    break;
+            }
+            return encoderId;
+        }
+
+        private static async Task<DeviceInformation> FindCameraDeviceByPanelAsync(Windows.Devices.Enumeration.Panel desiredPanel)
+        {
+            var allVideoDevices = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture);
+
+            DeviceInformation desiredDevice = allVideoDevices.FirstOrDefault(x => x.EnclosureLocation != null && x.EnclosureLocation.Panel == desiredPanel);
+
+            return desiredDevice ?? allVideoDevices.FirstOrDefault();
         }
     }
 }
