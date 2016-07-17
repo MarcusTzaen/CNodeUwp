@@ -1,14 +1,13 @@
 ﻿using CNodeUwp.Common;
 using CNodeUwp.Models.Topic.Version1;
 using CNodeUwp.Services.Topic.Version1;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
 using System.Threading;
 
 namespace CNodeUwp.ViewModels
 {
-    public class TopicDetailViewModel : ViewModelBase
+    public class TopicDetailViewModel : LoginViewModel
     {
         private INavigationService _navigationService { get; set; }
 
@@ -25,19 +24,7 @@ namespace CNodeUwp.ViewModels
                 Set(nameof(Topic), ref _topic, value);
             }
         }
-
-        public RelayCommand FilterCommand
-        {
-            get
-            {
-                return new RelayCommand(() =>
-                           {
-                               //await GetTopics(1, TopicTabType.All);
-                               //_navigationService.NavigateTo("", )
-                           });
-            }
-        }
-
+        
         public RelayCommand RefreshCommand
         {
             get
@@ -48,8 +35,6 @@ namespace CNodeUwp.ViewModels
                 });
             }
         }
-
-
 
         public TopicDetailViewModel(
             INavigationService navigationService

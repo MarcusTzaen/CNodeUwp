@@ -45,10 +45,12 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*"></RowDefinition>
                     </Grid.RowDefinitions>
-                    
-                    <!--<TextBlock Grid.Row="0" Text="Loading..." HorizontalAlignment="Center"
-                               Visibility="{Binding Topics.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"></TextBlock>-->
-                    <pr:PullToRefreshBox RefreshThreshold="96">
+
+                    <ProgressRing Grid.Row="0" HorizontalAlignment="Center" VerticalContentAlignment="Center"
+                                  IsActive="{Binding Topics.IsLoading}"
+                                  Visibility="{Binding Topics.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"></ProgressRing>
+                    <pr:PullToRefreshBox RefreshThreshold="96" 
+                                         Visibility="{Binding !Topics.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Interactivity:Interaction.Behaviors>
                             <Interactions:EventTriggerBehavior EventName="RefreshInvoked">
                                 <Interactions:InvokeCommandAction  Command="{Binding RefreshCommand}"></Interactions:InvokeCommandAction>

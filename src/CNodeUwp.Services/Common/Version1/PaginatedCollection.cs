@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,13 +14,14 @@ namespace CNodeUwp.Services.Common.Version1
         private Func<int, Task<ObservableCollection<T>>> _load;
         public bool HasMoreItems { get; protected set; }
 
-        public bool IsLoading { get; private set; } = true;
-
-        public bool IsLoadingCompleted
+        private bool _isLoading = true;
+        public bool IsLoading
         {
-            get
+            get { return _isLoading; }
+            set
             {
-                return !IsLoading;
+                _isLoading = value;
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsLoading)));
             }
         }
 
@@ -39,14 +41,13 @@ namespace CNodeUwp.Services.Common.Version1
 
         private async Task<LoadMoreItemsResult> LoadAsync(uint count, CancellationToken cancellationToken)
         {
-            IsLoading = true;
             var topicList = await _load(this.Count / 10 + 1);
             foreach (var t in topicList)
             {
                 this.Add(t);
             }
             this.HasMoreItems = topicList.Count >= 10;
-            IsLoading = false;
+            IsLoading = topicList.Count <= 0;
             return new LoadMoreItemsResult() { Count = (uint)topicList.Count };
         }
     }

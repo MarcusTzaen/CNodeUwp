@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CNodeUwp.ViewModels;
+using GalaSoft.MvvmLight.Messaging;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -18,6 +20,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI.Xaml.Navigation;
 using ZXing;
 using ZXing.Common;
 
@@ -39,6 +42,8 @@ namespace CNodeUwp
 
         private bool IsBusy;
 
+        private DispatcherTimer _timer { get; set; }
+
         public Scanning()
         {
             this.InitializeComponent();
@@ -51,6 +56,14 @@ namespace CNodeUwp
                 }
             };
             Init();
+
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            //_timer.Stop();
+            //_mediaCapture.Dispose();
+            base.OnNavigatedFrom(e);
         }
 
         private async Task Init()
@@ -141,10 +154,10 @@ namespace CNodeUwp
                     }
                 };
 
-                var timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromMilliseconds(50);
-                timer.Tick += _timer_Tick;
-                timer.Start();
+                _timer = new DispatcherTimer();
+                _timer.Interval = TimeSpan.FromMilliseconds(50);
+                _timer.Tick += _timer_Tick;
+                _timer.Start();
 
             }
             catch (Exception ex)
@@ -209,6 +222,7 @@ namespace CNodeUwp
                     await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                     {
                         tbkResult.Text = _result.Text;
+                        HandleResult(_result.Text);
                     });
                 }
             }
@@ -292,6 +306,12 @@ namespace CNodeUwp
             DeviceInformation desiredDevice = allVideoDevices.FirstOrDefault(x => x.EnclosureLocation != null && x.EnclosureLocation.Panel == desiredPanel);
 
             return desiredDevice ?? allVideoDevices.FirstOrDefault();
+        }
+
+        private void HandleResult(string token)
+        {
+            Messenger.Default.Send<string, MainPageViewModel>(token);
+            Frame.GoBack();
         }
     }
 }

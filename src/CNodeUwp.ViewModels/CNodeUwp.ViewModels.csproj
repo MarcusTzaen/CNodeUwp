@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="FeedbackViewModel.cs" />
     <Compile Include="AboutPageViewModel.cs" />
+    <Compile Include="LoginViewModel.cs" />
     <Compile Include="TopicDetailViewModel.cs" />
     <Compile Include="MainPageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

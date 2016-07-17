@@ -12,7 +12,7 @@
 
     <Page.BottomAppBar>
         <CommandBar ClosedDisplayMode="Compact">
-            <AppBarButton Icon="Add" Label="回复"></AppBarButton>
+            <AppBarButton Icon="Add" Label="回复" Visibility="{Binding IsLogin, Converter={StaticResource BooleanToVisibilityConverter}}"></AppBarButton>
             <AppBarButton Icon="Refresh" Label="刷新" Command="{Binding RefreshCommand}"></AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Icon="like" Label="喜欢"></AppBarButton>
