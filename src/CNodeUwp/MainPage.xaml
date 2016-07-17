@@ -47,7 +47,7 @@
                     </Grid.RowDefinitions>
 
                     <ProgressRing Grid.Row="0" HorizontalAlignment="Center" VerticalContentAlignment="Center"
-                                  IsActive="{Binding Topics.IsLoading}"
+                                  IsActive="{Binding Topics.IsLoading}" Height="60" Width="60"
                                   Visibility="{Binding Topics.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"></ProgressRing>
                     <pr:PullToRefreshBox RefreshThreshold="96" 
                                          Visibility="{Binding !Topics.IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
